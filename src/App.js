@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
 
+import { CSVLink } from "react-csv";
+
 class App extends React.Component {
 
   state = {
@@ -15,9 +17,12 @@ class App extends React.Component {
     var table = document.getElementById("table");
     var html = table.outerHTML;
     var url = 'data:application/vnd.ms-excel,' + escape(html); // Set your html table into url
-    elem.setAttribute("href", url);
-    elem.setAttribute("download", "export.xls"); // Choose the file name
-    return false;
+
+    var link = document.createElement("a");
+    link.download = "export.xls";
+    link.href = url;
+
+    link.click();
   }
 
   handleSubmit = event => {
@@ -35,6 +40,7 @@ class App extends React.Component {
     this.setState({
       values: result
     });
+
   }
 
   export = () => {
@@ -59,11 +65,10 @@ class App extends React.Component {
 
             <input type="number" ref={input => this.maxRef = input} className={"formControl"} placeholder={"Maximum value"} />
 
-            <input type="number" ref={input => this.rangeRef = input} className={"formControl"} placeholder={"Range"} />
-
             <input type="number" ref={input => this.decimalRef = input} className={"formControl"} placeholder={"Decimal"} />
-          </div>
 
+            <input type="number" ref={input => this.rangeRef = input} className={"formControl"} placeholder={"Number to generate"} />
+          </div>
 
           <button onClick={this.handleSubmit} className={"button button_primary"}> Compute </button>
         </div>
